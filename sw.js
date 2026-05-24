@@ -1,4 +1,4 @@
-const CACHE = 'birthdays-v1';
+const CACHE = 'birthdays-v3';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', e => {
