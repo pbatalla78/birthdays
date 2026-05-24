@@ -173,9 +173,9 @@
   {
     "id": 49,
     "name": "Mery Nava",
-    "day": null,
+    "day": 14,
     "month": 7,
-    "year": null,
+    "year": 1978,
     "source": "facebook",
     "enabled": true
   },
@@ -545,6 +545,15 @@
     "day": null,
     "month": null,
     "year": null,
+    "source": "manual",
+    "enabled": true
+  },
+  {
+    "id": 91,
+    "name": "Bea Guardiola",
+    "day": 13,
+    "month": 7,
+    "year": 1985,
     "source": "manual",
     "enabled": true
   }
