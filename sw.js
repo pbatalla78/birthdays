@@ -1,8 +1,8 @@
-const CACHE = 'birthdays-v3';
-const ASSETS = ['./', './index.html', './manifest.json'];
+const CACHE = 'birthdays-v4';
+const STATIC = ['manifest.json', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(STATIC)));
   self.skipWaiting();
 });
 
@@ -14,8 +14,14 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  if (e.request.url.includes('api.github.com')) return;
+  const url = e.request.url;
+  // Always network-first for HTML and GitHub API
+  if (url.includes('api.github.com') || url.endsWith('.html') || url.endsWith('/')) {
+    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+    return;
+  }
+  // Cache-first for static assets
   e.respondWith(
-    fetch(e.request).catch(() => caches.match(e.request))
+    caches.match(e.request).then(cached => cached || fetch(e.request))
   );
 });

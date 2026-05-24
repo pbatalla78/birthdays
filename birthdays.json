@@ -109,7 +109,7 @@
   },
   {
     "id": 31,
-    "name": "Estefania GonzÃÂ¡lez Campins",
+    "name": "Estefania González Campins",
     "day": null,
     "month": 6,
     "year": null,
@@ -127,7 +127,7 @@
   },
   {
     "id": 35,
-    "name": "Berta RicÃÂ³s FuriÃÂ³",
+    "name": "Berta Ricós Furió",
     "day": null,
     "month": 6,
     "year": null,
@@ -136,7 +136,7 @@
   },
   {
     "id": 36,
-    "name": "VicenÃÂ§ HernÃÂ¡ndez Reche",
+    "name": "Vicenç Hernández Reche",
     "day": null,
     "month": 6,
     "year": null,
@@ -173,15 +173,15 @@
   {
     "id": 49,
     "name": "Mery Nava",
-    "day": 14,
+    "day": null,
     "month": 7,
-    "year": 1978,
+    "year": null,
     "source": "facebook",
     "enabled": true
   },
   {
     "id": 50,
-    "name": "Tomas HernÃÂ¡ndez",
+    "name": "Tomas Hernández",
     "day": 16,
     "month": 10,
     "year": 1974,
@@ -280,7 +280,7 @@
   },
   {
     "id": 61,
-    "name": "MartÃÂ­ Navarro",
+    "name": "Martí Navarro",
     "day": 28,
     "month": 8,
     "year": 2019,
@@ -496,7 +496,7 @@
   },
   {
     "id": 85,
-    "name": "Aroa MartÃÂ­n",
+    "name": "Aroa Martín",
     "day": 30,
     "month": 10,
     "year": 1978,
@@ -542,9 +542,9 @@
   {
     "id": 90,
     "name": "Bea Guardiola",
-    "day": 13,
-    "month": 7,
-    "year": 1985,
+    "day": null,
+    "month": null,
+    "year": null,
     "source": "manual",
     "enabled": true
   }
