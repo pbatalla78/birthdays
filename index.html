@@ -12,6 +12,7 @@
 <title>Birthday Manager</title>
 <style>
   :root {
+    --safe-top: env(safe-area-inset-top, 0px);
     --bg: #1a1a2e;
     --surface: #16213e;
     --card: #0f3460;
@@ -29,7 +30,7 @@
   /* HEADER */
   header {
     background: var(--surface);
-    padding: 16px 20px 12px;
+    padding: calc(16px + var(--safe-top)) 20px 12px;
     display: flex; align-items: center; justify-content: space-between;
     position: sticky; top: 0; z-index: 100;
     border-bottom: 1px solid rgba(255,255,255,0.07);
