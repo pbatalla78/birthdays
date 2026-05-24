@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#e94560">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Birthdays">
+<link rel="manifest" href="manifest.json">
+<title>Birthday Manager</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --card: #0f3460;
+    --accent: #e94560;
+    --accent2: #f5a623;
+    --text: #eaeaea;
+    --muted: #8892a4;
+    --green: #4caf50;
+    --radius: 12px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    padding: 16px 20px 12px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  header h1 { font-size: 1.2rem; font-weight: 700; }
+  header h1 span { color: var(--accent); }
+  .header-actions { display: flex; gap: 10px; }
+
+  /* BUTTONS */
+  button {
+    border: none; cursor: pointer; border-radius: 8px;
+    font-size: 0.85rem; font-weight: 600; transition: all 0.15s;
+  }
+  button:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #fff; padding: 8px 16px; }
+  .btn-ghost { background: rgba(255,255,255,0.08); color: var(--text); padding: 8px 14px; }
+  .btn-ghost:hover { background: rgba(255,255,255,0.14); }
+  .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
+  .btn-icon { background: transparent; color: var(--muted); padding: 6px; font-size: 1rem; border-radius: 6px; }
+  .btn-icon:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+  .btn-danger { background: #c0392b; color: #fff; }
+
+  /* TABS */
+  .tabs {
+    display: flex; background: var(--surface);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: 1; min-width: 80px; padding: 11px 8px; text-align: center;
+    font-size: 0.82rem; font-weight: 600; color: var(--muted);
+    background: transparent; border-bottom: 2px solid transparent;
+    cursor: pointer; white-space: nowrap; transition: all 0.15s;
+  }
+  .tab.active { color: var(--accent); border-color: var(--accent); }
+
+  /* SEARCH */
+  .search-bar {
+    padding: 12px 16px; background: var(--surface);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex; gap: 8px;
+  }
+  .search-bar input {
+    flex: 1; background: rgba(255,255,255,0.07); border: none;
+    border-radius: 8px; padding: 9px 14px; color: var(--text);
+    font-size: 0.9rem; outline: none;
+  }
+  .search-bar input::placeholder { color: var(--muted); }
+  .search-bar input:focus { background: rgba(255,255,255,0.11); }
+
+  /* CONTENT */
+  #content { overflow-y: auto; padding-bottom: calc(20px + var(--safe-bottom)); }
+
+  /* BIRTHDAY CARDS */
+  .birthday-list { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .birthday-card {
+    background: var(--card); border-radius: var(--radius);
+    padding: 13px 14px; display: flex; align-items: center; gap: 12px;
+    transition: background 0.15s;
+  }
+  .birthday-card.disabled { opacity: 0.45; }
+  .birthday-card.today { border-left: 3px solid var(--accent2); }
+  .avatar {
+    width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 700;
+  }
+  .avatar.fb { background: #1877f2; }
+  .avatar.manual { background: var(--accent); }
+  .card-info { flex: 1; min-width: 0; }
+  .card-name { font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-date { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .toggle-btn {
+    width: 36px; height: 20px; border-radius: 10px; border: none; cursor: pointer;
+    transition: background 0.2s; position: relative; flex-shrink: 0;
+  }
+  .toggle-btn::after {
+    content: ''; position: absolute; top: 2px; left: 2px;
+    width: 16px; height: 16px; border-radius: 50%; background: #fff;
+    transition: left 0.2s;
+  }
+  .toggle-btn.on { background: var(--green); }
+  .toggle-btn.on::after { left: 18px; }
+  .toggle-btn.off { background: var(--muted); }
+
+  /* UPCOMING SECTION */
+  .section-label {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    color: var(--muted); letter-spacing: 0.08em;
+    padding: 14px 14px 6px; display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+
+  /* MONTH BADGE */
+  .month-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); display: flex; align-items: center;
+    justify-content: center; font-size: 0.7rem; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .month-dot.no-date { background: var(--muted); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    z-index: 200; align-items: flex-end; justify-content: center;
+    padding: 0 0 var(--safe-bottom);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface); border-radius: 20px 20px 0 0;
+    width: 100%; max-width: 520px; padding: 20px;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal h2 { font-size: 1.1rem; margin-bottom: 18px; }
+  .form-row { margin-bottom: 14px; }
+  .form-row label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 5px; }
+  .form-row input, .form-row select {
+    width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 10px 12px; color: var(--text);
+    font-size: 0.95rem; outline: none;
+  }
+  .form-row input:focus, .form-row select:focus { border-color: var(--accent); background: rgba(255,255,255,0.1); }
+  .form-row select option { background: var(--surface); }
+  .form-row-inline { display: flex; gap: 10px; }
+  .form-row-inline .form-row { flex: 1; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .modal-actions button { flex: 1; padding: 12px; }
+
+  /* SETTINGS PANEL */
+  .settings-section { padding: 16px; }
+  .settings-section h3 { font-size: 0.9rem; color: var(--muted); margin-bottom: 12px; font-weight: 600; }
+  .setting-row {
+    background: var(--card); border-radius: var(--radius); padding: 14px;
+    margin-bottom: 10px;
+  }
+  .setting-row label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 4px; }
+  .setting-row small { color: var(--muted); font-size: 0.78rem; display: block; margin-bottom: 10px; }
+  .setting-row input {
+    width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 9px 12px; color: var(--text); font-size: 0.9rem; outline: none;
+  }
+  .setting-row input:focus { border-color: var(--accent); }
+  .pat-status { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; margin-top: 8px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.green { background: var(--green); }
+  .dot.red { background: var(--accent); }
+  .dot.grey { background: var(--muted); }
+
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px; }
+  .stat-card {
+    background: var(--card); border-radius: var(--radius); padding: 14px;
+    text-align: center;
+  }
+  .stat-card .num { font-size: 1.8rem; font-weight: 800; color: var(--accent); }
+  .stat-card .lbl { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: calc(20px + var(--safe-bottom)); left: 50%; transform: translateX(-50%);
+    background: #333; color: #fff; padding: 10px 20px; border-radius: 20px;
+    font-size: 0.85rem; z-index: 999; opacity: 0; pointer-events: none;
+    transition: opacity 0.3s; white-space: nowrap;
+  }
+  #toast.show { opacity: 1; }
+
+  /* LOADING */
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin 0.8s linear infinite; margin: 40px auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* EMPTY STATE */
+  .empty { text-align: center; padding: 50px 20px; color: var(--muted); }
+  .empty .icon { font-size: 3rem; margin-bottom: 12px; }
+
+  /* BADGE */
+  .badge {
+    display: inline-block; padding: 2px 7px; border-radius: 10px;
+    font-size: 0.7rem; font-weight: 700;
+  }
+  .badge.fb { background: #1877f2; color: #fff; }
+  .badge.manual { background: rgba(233,69,96,0.25); color: var(--accent); }
+
+  /* SYNC BTN */
+  .sync-btn {
+    display: flex; align-items: center; gap: 6px; padding: 7px 14px;
+    background: rgba(255,255,255,0.08); color: var(--text); border: none;
+    border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600;
+  }
+  .sync-btn.syncing .sync-icon { animation: spin 0.8s linear infinite; display: inline-block; }
+
+  /* FB IMPORT */
+  .import-area {
+    padding: 14px;
+  }
+  .import-area textarea {
+    width: 100%; min-height: 120px; background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+    padding: 10px; color: var(--text); font-size: 0.85rem; resize: vertical; outline: none;
+  }
+  .import-area textarea:focus { border-color: var(--accent); }
+  .import-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .import-item {
+    background: var(--card); border-radius: 8px; padding: 11px 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .import-item label { display: flex; align-items: center; gap: 10px; cursor: pointer; flex: 1; }
+  .import-item input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
+  .import-item .iname { font-size: 0.9rem; font-weight: 600; }
+  .import-item .idate { font-size: 0.78rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎂 <span>Birthdays</span></h1>
+  <div class="header-actions">
+    <button class="btn-ghost btn-sm sync-btn" id="syncBtn" onclick="syncToGitHub()">
+      <span class="sync-icon">⟳</span> Guardar
+    </button>
+    <button class="btn-primary btn-sm" onclick="openAddModal()">+ Añadir</button>
+  </div>
+</header>
+
+<div class="tabs" role="tablist">
+  <button class="tab active" onclick="switchTab('list',this)">Lista</button>
+  <button class="tab" onclick="switchTab('upcoming',this)">Próximos</button>
+  <button class="tab" onclick="switchTab('import',this)">Importar FB</button>
+  <button class="tab" onclick="switchTab('settings',this)">Config</button>
+</div>
+
+<div class="search-bar" id="searchBar">
+  <input type="search" id="searchInput" placeholder="Buscar nombre..." oninput="renderList()">
+  <button class="btn-ghost btn-sm" onclick="toggleFilter()" id="filterBtn">Todos</button>
+</div>
+
+<div id="content">
+  <div class="spinner" id="initialSpinner"></div>
+</div>
+
+<!-- MODAL AÑADIR/EDITAR -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h2 id="modalTitle">Añadir cumpleaños</h2>
+    <input type="hidden" id="editId">
+    <div class="form-row">
+      <label>Nombre *</label>
+      <input type="text" id="editName" placeholder="Nombre completo" autocomplete="off">
+    </div>
+    <div class="form-row-inline">
+      <div class="form-row">
+        <label>Día</label>
+        <input type="number" id="editDay" placeholder="DD" min="1" max="31">
+      </div>
+      <div class="form-row">
+        <label>Mes *</label>
+        <select id="editMonth">
+          <option value="">— mes —</option>
+          <option value="1">Enero</option><option value="2">Febrero</option>
+          <option value="3">Marzo</option><option value="4">Abril</option>
+          <option value="5">Mayo</option><option value="6">Junio</option>
+          <option value="7">Julio</option><option value="8">Agosto</option>
+          <option value="9">Septiembre</option><option value="10">Octubre</option>
+          <option value="11">Noviembre</option><option value="12">Diciembre</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Año</label>
+        <input type="number" id="editYear" placeholder="AAAA" min="1900" max="2030">
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Fuente</label>
+      <select id="editSource">
+        <option value="manual">Manual</option>
+        <option value="facebook">Facebook</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveEntry()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const GITHUB_USER = 'pbatalla78';
+const GITHUB_REPO = 'birthdays';
+const FILE_PATH = 'birthdays.json';
+const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${FILE_PATH}`;
+const API_URL = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_PATH}`;
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let birthdays = [];
+let currentTab = 'list';
+let filterActive = false; // false = all, true = enabled only
+let fileSha = null;
+
+const MONTHS = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const MONTHS_FULL = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+async function init() {
+  await loadFromGitHub();
+}
+
+async function loadFromGitHub() {
+  const pat = localStorage.getItem('gh_pat');
+  try {
+    let data;
+    if (pat) {
+      // authenticated — also grab sha for later writes
+      const res = await fetch(API_URL, { headers: { Authorization: `token ${pat}` } });
+      if (res.ok) {
+        data = await res.json();
+        fileSha = data.sha;
+        birthdays = JSON.parse(atob(data.content.replace(/\n/g, '')));
+      } else {
+        throw new Error('auth fail');
+      }
+    } else {
+      // unauthenticated raw read
+      const res = await fetch(RAW_URL + '?t=' + Date.now());
+      if (!res.ok) throw new Error('fetch fail');
+      birthdays = await res.json();
+    }
+    cacheData();
+  } catch (e) {
+    // fallback to cache
+    const cached = localStorage.getItem('birthdays_cache');
+    if (cached) {
+      birthdays = JSON.parse(cached);
+      toast('Sin conexión — usando datos locales');
+    } else {
+      birthdays = [];
+      toast('No se pudo cargar datos');
+    }
+  }
+  document.getElementById('initialSpinner').remove();
+  renderTab();
+}
+
+function cacheData() {
+  localStorage.setItem('birthdays_cache', JSON.stringify(birthdays));
+}
+
+// ── SYNC TO GITHUB ───────────────────────────────────────────────────────────
+async function syncToGitHub() {
+  const pat = localStorage.getItem('gh_pat');
+  if (!pat) {
+    toast('⚠ Configura tu PAT en la pestaña Config');
+    switchTabByName('settings');
+    return;
+  }
+  const btn = document.getElementById('syncBtn');
+  btn.classList.add('syncing');
+
+  try {
+    // refresh sha
+    const meta = await fetch(API_URL, { headers: { Authorization: `token ${pat}` } });
+    if (!meta.ok) throw new Error('no auth');
+    const mj = await meta.json();
+    fileSha = mj.sha;
+
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(birthdays, null, 2))));
+    const res = await fetch(API_URL, {
+      method: 'PUT',
+      headers: { Authorization: `token ${pat}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Update birthdays.json [${new Date().toLocaleDateString('es-ES')}]`,
+        content,
+        sha: fileSha
+      })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    const rj = await res.json();
+    fileSha = rj.content.sha;
+    cacheData();
+    toast('✅ Guardado en GitHub');
+  } catch (e) {
+    toast('❌ Error: ' + e.message);
+  }
+  btn.classList.remove('syncing');
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────────────
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('searchBar').style.display = (tab === 'list') ? '' : 'none';
+  renderTab();
+}
+
+function switchTabByName(name) {
+  const tabs = document.querySelectorAll('.tab');
+  const names = ['list','upcoming','import','settings'];
+  const idx = names.indexOf(name);
+  if (idx >= 0) switchTab(name, tabs[idx]);
+}
+
+function renderTab() {
+  const c = document.getElementById('content');
+  if (currentTab === 'list') renderList();
+  else if (currentTab === 'upcoming') renderUpcoming();
+  else if (currentTab === 'import') renderImport();
+  else if (currentTab === 'settings') renderSettings();
+}
+
+// ── LIST TAB ─────────────────────────────────────────────────────────────────
+function toggleFilter() {
+  filterActive = !filterActive;
+  document.getElementById('filterBtn').textContent = filterActive ? 'Activos' : 'Todos';
+  renderList();
+}
+
+function renderList() {
+  if (currentTab !== 'list') return;
+  const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
+  let items = birthdays.filter(p =>
+    p.name.toLowerCase().includes(q) &&
+    (!filterActive || p.enabled)
+  );
+  items.sort((a, b) => {
+    const am = a.month || 13, bm = b.month || 13;
+    if (am !== bm) return am - bm;
+    return (a.day || 32) - (b.day || 32);
+  });
+
+  const today = new Date();
+  const c = document.getElementById('content');
+  if (!items.length) {
+    c.innerHTML = `<div class="empty"><div class="icon">🎈</div>Sin resultados</div>`;
+    return;
+  }
+  c.innerHTML = `<div class="birthday-list">${items.map(p => cardHTML(p, today)).join('')}</div>`;
+}
+
+function cardHTML(p, today) {
+  const isToday = p.day === today.getDate() && p.month === (today.getMonth()+1);
+  const initials = p.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  const src = p.source === 'facebook' ? 'fb' : 'manual';
+  const dateStr = p.day ? `${p.day} ${MONTHS_FULL[p.month]}${p.year ? ' '+p.year : ''}` : (p.month ? MONTHS_FULL[p.month] : '—');
+  return `
+  <div class="birthday-card${p.enabled ? '' : ' disabled'}${isToday ? ' today' : ''}">
+    <div class="avatar ${src}">${initials}</div>
+    <div class="card-info">
+      <div class="card-name">${esc(p.name)} ${isToday ? '🎉' : ''}</div>
+      <div class="card-date">${dateStr} <span class="badge ${src}">${src}</span></div>
+    </div>
+    <div class="card-actions">
+      <button class="toggle-btn ${p.enabled ? 'on' : 'off'}" onclick="toggleEnabled(${p.id})" title="${p.enabled ? 'Desactivar' : 'Activar'}"></button>
+      <button class="btn-icon" onclick="openEditModal(${p.id})" title="Editar">✏️</button>
+      <button class="btn-icon" onclick="deleteEntry(${p.id})" title="Eliminar">🗑️</button>
+    </div>
+  </div>`;
+}
+
+// ── UPCOMING TAB ──────────────────────────────────────────────────────────────
+function renderUpcoming() {
+  const today = new Date();
+  const todayM = today.getMonth() + 1;
+  const todayD = today.getDate();
+
+  // build list of next 365 days sorted
+  const active = birthdays.filter(p => p.enabled && p.month);
+  const withDays = active.map(p => {
+    let month = p.month, day = p.day || 1;
+    let bday = new Date(today.getFullYear(), month - 1, day);
+    if (bday < today) bday.setFullYear(today.getFullYear() + 1);
+    const diff = Math.ceil((bday - today) / 86400000);
+    return { ...p, diff, bday };
+  });
+  withDays.sort((a, b) => a.diff - b.diff);
+
+  const c = document.getElementById('content');
+  if (!withDays.length) {
+    c.innerHTML = `<div class="empty"><div class="icon">📅</div>Sin cumpleaños activos</div>`;
+    return;
+  }
+
+  let html = '<div class="birthday-list">';
+  let prevSection = '';
+
+  withDays.forEach(p => {
+    let section;
+    if (p.diff === 0) section = '🎉 HOY';
+    else if (p.diff <= 7) section = 'Esta semana';
+    else if (p.diff <= 30) section = 'Este mes';
+    else section = MONTHS_FULL[p.bday.getMonth() + 1] + ' ' + p.bday.getFullYear();
+
+    if (section !== prevSection) {
+      html += `<div class="section-label">${section}</div>`;
+      prevSection = section;
+    }
+
+    const initials = p.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    const src = p.source === 'facebook' ? 'fb' : 'manual';
+    const dayLabel = p.day ? `${p.day} ${MONTHS[p.month]}` : MONTHS_FULL[p.month];
+    const age = p.year ? ` · ${p.bday.getFullYear() - p.year} años` : '';
+    const daysLeft = p.diff === 0 ? '¡hoy!' : (p.diff === 1 ? 'mañana' : `en ${p.diff}d`);
+
+    html += `
+    <div class="birthday-card${p.diff === 0 ? ' today' : ''}">
+      <div class="avatar ${src}">${initials}</div>
+      <div class="card-info">
+        <div class="card-name">${esc(p.name)}</div>
+        <div class="card-date">${dayLabel}${age}</div>
+      </div>
+      <div style="font-size:0.8rem;color:var(--muted);flex-shrink:0">${daysLeft}</div>
+    </div>`;
+  });
+
+  html += '</div>';
+  c.innerHTML = html;
+}
+
+// ── IMPORT FB TAB ─────────────────────────────────────────────────────────────
+function renderImport() {
+  const c = document.getElementById('content');
+  c.innerHTML = `
+  <div class="import-area">
+    <div class="section-label">Pegar texto de Facebook</div>
+    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:10px">
+      Ve a facebook.com/events/birthdays, selecciona todo el texto de la página y pégalo aquí.
+    </p>
+    <textarea id="fbPaste" placeholder="Pega aquí el texto de Facebook..."></textarea>
+    <button class="btn-primary" style="width:100%;margin-top:10px;padding:11px" onclick="parseFbText()">Analizar</button>
+    <div id="importResults"></div>
+  </div>`;
+}
+
+function parseFbText() {
+  const raw = document.getElementById('fbPaste').value;
+  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+  const existing = new Set(birthdays.map(p => p.name.toLowerCase()));
+  const found = [];
+
+  // patterns: "Name's birthday is on DD Month" or "Name, DD Month YYYY"
+  const re1 = /^(.+?)(?:'s|'s) birthday is/i;
+  const re2 = /^(.+?),\s+(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i;
+  const monthMap = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+
+  lines.forEach(line => {
+    let name = null, day = null, month = null, year = null;
+    const m1 = line.match(re1);
+    if (m1) {
+      name = m1[1].trim();
+      // try to extract date from same line
+      const dateMatch = line.match(/(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?:\s+(\d{4}))?/i);
+      if (dateMatch) {
+        day = parseInt(dateMatch[1]);
+        month = monthMap[dateMatch[2].toLowerCase()];
+        year = dateMatch[3] ? parseInt(dateMatch[3]) : null;
+      }
+    }
+    const m2 = line.match(re2);
+    if (!name && m2) {
+      name = m2[1].trim();
+      day = parseInt(m2[2]);
+      month = monthMap[m2[3].toLowerCase()];
+    }
+    if (name && !existing.has(name.toLowerCase())) {
+      if (!found.find(f => f.name.toLowerCase() === name.toLowerCase())) {
+        found.push({ name, day, month, year });
+      }
+    }
+  });
+
+  const container = document.getElementById('importResults');
+  if (!found.length) {
+    container.innerHTML = `<p style="color:var(--muted);margin-top:14px;font-size:0.85rem">No se encontraron contactos nuevos (todos ya existen o no se pudo parsear el formato).</p>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="section-label" style="margin-top:14px">${found.length} nuevos encontrados</div>
+    <div class="import-list" id="importList">
+      ${found.map((p,i) => `
+      <div class="import-item">
+        <label>
+          <input type="checkbox" checked id="imp_${i}">
+          <div>
+            <div class="iname">${esc(p.name)}</div>
+            <div class="idate">${p.day ? p.day+' '+MONTHS_FULL[p.month] : (p.month ? MONTHS_FULL[p.month] : 'Sin fecha')}</div>
+          </div>
+        </label>
+      </div>`).join('')}
+    </div>
+    <button class="btn-primary" style="width:100%;margin-top:12px;padding:11px" onclick="confirmImport(${JSON.stringify(found).replace(/"/g,'&quot;')})">
+      Añadir seleccionados (inactivos)
+    </button>`;
+}
+
+function confirmImport(found) {
+  const selected = found.filter((_, i) => document.getElementById(`imp_${i}`)?.checked);
+  if (!selected.length) { toast('Nada seleccionado'); return; }
+  const maxId = birthdays.reduce((m, p) => Math.max(m, p.id), 0);
+  selected.forEach((p, i) => {
+    birthdays.push({
+      id: maxId + i + 1,
+      name: p.name,
+      day: p.day || null,
+      month: p.month || null,
+      year: p.year || null,
+      source: 'facebook',
+      enabled: false
+    });
+  });
+  cacheData();
+  toast(`✅ ${selected.length} añadidos como inactivos`);
+  document.getElementById('fbPaste').value = '';
+  document.getElementById('importResults').innerHTML = '';
+}
+
+// ── SETTINGS TAB ─────────────────────────────────────────────────────────────
+function renderSettings() {
+  const pat = localStorage.getItem('gh_pat') || '';
+  const masked = pat ? pat.slice(0,8) + '...' : '';
+  const active = birthdays.filter(p => p.enabled).length;
+  const total = birthdays.length;
+
+  const c = document.getElementById('content');
+  c.innerHTML = `
+  <div class="stats-grid">
+    <div class="stat-card"><div class="num">${active}</div><div class="lbl">Activos</div></div>
+    <div class="stat-card"><div class="num">${total}</div><div class="lbl">Total</div></div>
+    <div class="stat-card"><div class="num">${birthdays.filter(p=>p.source==='facebook').length}</div><div class="lbl">Facebook</div></div>
+    <div class="stat-card"><div class="num">${birthdays.filter(p=>p.source==='manual').length}</div><div class="lbl">Manuales</div></div>
+  </div>
+
+  <div class="settings-section">
+    <h3>Sincronización GitHub</h3>
+    <div class="setting-row">
+      <label>Personal Access Token (PAT)</label>
+      <small>Necesario para guardar cambios en GitHub. Crea uno en github.com → Settings → Developer settings → Personal access tokens con scope <strong>public_repo</strong>.</small>
+      <input type="password" id="patInput" placeholder="ghp_..." value="${esc(pat)}" oninput="updatePatStatus()">
+      <div class="pat-status" id="patStatus">
+        <div class="dot ${pat ? 'green' : 'grey'}"></div>
+        <span>${pat ? 'Token configurado' : 'Sin token — solo lectura'}</span>
+      </div>
+      <button class="btn-primary btn-sm" style="margin-top:10px" onclick="savePat()">Guardar token</button>
+      ${pat ? `<button class="btn-ghost btn-sm" style="margin-top:10px;margin-left:8px" onclick="clearPat()">Borrar</button>` : ''}
+    </div>
+
+    <div class="setting-row">
+      <label>Forzar recarga desde GitHub</label>
+      <small>Descarta cambios locales y recarga desde el repositorio.</small>
+      <button class="btn-ghost btn-sm" style="margin-top:4px" onclick="forceReload()">↻ Recargar</button>
+    </div>
+
+    <div class="setting-row">
+      <label>Exportar JSON</label>
+      <small>Descarga birthdays.json para usar con el script local del PC.</small>
+      <button class="btn-ghost btn-sm" style="margin-top:4px" onclick="exportJSON()">⬇ Descargar</button>
+    </div>
+  </div>`;
+}
+
+function updatePatStatus() {
+  const val = document.getElementById('patInput')?.value || '';
+  const s = document.getElementById('patStatus');
+  if (s) s.innerHTML = `<div class="dot ${val ? 'green' : 'grey'}"></div><span>${val ? 'Token listo — pulsa Guardar' : 'Sin token'}</span>`;
+}
+
+function savePat() {
+  const val = document.getElementById('patInput')?.value.trim();
+  if (!val) { toast('Introduce un token'); return; }
+  localStorage.setItem('gh_pat', val);
+  toast('✅ Token guardado');
+  renderSettings();
+}
+
+function clearPat() {
+  localStorage.removeItem('gh_pat');
+  toast('Token eliminado');
+  renderSettings();
+}
+
+async function forceReload() {
+  document.getElementById('content').innerHTML = '<div class="spinner"></div>';
+  fileSha = null;
+  await loadFromGitHub();
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(birthdays, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'birthdays.json';
+  a.click();
+}
+
+// ── EDIT / ADD MODAL ─────────────────────────────────────────────────────────
+function openAddModal() {
+  document.getElementById('modalTitle').textContent = 'Añadir cumpleaños';
+  document.getElementById('editId').value = '';
+  document.getElementById('editName').value = '';
+  document.getElementById('editDay').value = '';
+  document.getElementById('editMonth').value = '';
+  document.getElementById('editYear').value = '';
+  document.getElementById('editSource').value = 'manual';
+  document.getElementById('editModal').classList.add('open');
+}
+
+function openEditModal(id) {
+  const p = birthdays.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('modalTitle').textContent = 'Editar cumpleaños';
+  document.getElementById('editId').value = id;
+  document.getElementById('editName').value = p.name;
+  document.getElementById('editDay').value = p.day || '';
+  document.getElementById('editMonth').value = p.month || '';
+  document.getElementById('editYear').value = p.year || '';
+  document.getElementById('editSource').value = p.source || 'manual';
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('editModal').classList.remove('open');
+}
+
+function saveEntry() {
+  const name = document.getElementById('editName').value.trim();
+  if (!name) { toast('El nombre es obligatorio'); return; }
+  const month = parseInt(document.getElementById('editMonth').value) || null;
+  if (!month) { toast('El mes es obligatorio'); return; }
+  const day = parseInt(document.getElementById('editDay').value) || null;
+  const year = parseInt(document.getElementById('editYear').value) || null;
+  const source = document.getElementById('editSource').value;
+  const id = document.getElementById('editId').value;
+
+  if (id) {
+    const p = birthdays.find(x => x.id === parseInt(id));
+    if (p) { p.name = name; p.day = day; p.month = month; p.year = year; p.source = source; }
+  } else {
+    const maxId = birthdays.reduce((m, p) => Math.max(m, p.id), 0);
+    birthdays.push({ id: maxId + 1, name, day, month, year, source, enabled: true });
+  }
+  cacheData();
+  closeModal();
+  renderTab();
+  toast(id ? '✅ Actualizado' : '✅ Añadido');
+}
+
+function toggleEnabled(id) {
+  const p = birthdays.find(x => x.id === id);
+  if (p) p.enabled = !p.enabled;
+  cacheData();
+  renderList();
+}
+
+function deleteEntry(id) {
+  const p = birthdays.find(x => x.id === id);
+  if (!p) return;
+  if (!confirm(`¿Eliminar a ${p.name}?`)) return;
+  birthdays = birthdays.filter(x => x.id !== id);
+  cacheData();
+  renderTab();
+  toast('🗑️ Eliminado');
+}
+
+// ── UTILS ────────────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let _toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// close modal on backdrop click
+document.getElementById('editModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// kick off
+init();
+</script>
+</body>
+</html>
