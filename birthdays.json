@@ -547,5 +547,14 @@
         "year":  1985,
         "source":  "manual",
         "enabled":  true
+    },
+    {
+        "id":  92,
+        "name":  "Maria Navarro",
+        "day":  14,
+        "month":  7,
+        "year":  1978,
+        "source":  "manual",
+        "enabled":  true
     }
 ]
