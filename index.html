@@ -408,7 +408,9 @@ async function syncToGitHub() {
     const mj = await meta.json();
     fileSha = mj.sha;
 
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(birthdays, null, 2))));
+    const json = JSON.stringify(birthdays, null, 2);
+    const bytes = new TextEncoder().encode(json);
+    const content = btoa(String.fromCharCode(...bytes));
     const res = await fetch(API_URL, {
       method: 'PUT',
       headers: { Authorization: `token ${pat}`, 'Content-Type': 'application/json' },
