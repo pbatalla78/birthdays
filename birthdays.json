@@ -38,9 +38,9 @@
   {
     "id": 13,
     "name": "Marc Ribes",
-    "day": null,
+    "day": 4,
     "month": 6,
-    "year": null,
+    "year": 1978,
     "source": "facebook",
     "enabled": true
   },
