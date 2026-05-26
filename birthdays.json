@@ -574,5 +574,23 @@
     "year": 1978,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 95,
+    "name": "Alex Boada",
+    "day": 28,
+    "month": 4,
+    "year": 1976,
+    "source": "manual",
+    "enabled": true
+  },
+  {
+    "id": 96,
+    "name": "Marc Planas",
+    "day": 12,
+    "month": 4,
+    "year": 1978,
+    "source": "manual",
+    "enabled": true
   }
 ]
