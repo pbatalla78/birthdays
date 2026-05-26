@@ -592,5 +592,50 @@
     "year": 1978,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 97,
+    "name": "Sergi Santos",
+    "day": 27,
+    "month": 12,
+    "year": 1979,
+    "source": "manual",
+    "enabled": true
+  },
+  {
+    "id": 98,
+    "name": "Carmen Miralles",
+    "day": 23,
+    "month": 12,
+    "year": 1988,
+    "source": "manual",
+    "enabled": true
+  },
+  {
+    "id": 99,
+    "name": "Martí Escursell",
+    "day": 15,
+    "month": 5,
+    "year": 1976,
+    "source": "manual",
+    "enabled": true
+  },
+  {
+    "id": 100,
+    "name": "Aleix Marco",
+    "day": 12,
+    "month": 12,
+    "year": 1976,
+    "source": "manual",
+    "enabled": true
+  },
+  {
+    "id": 101,
+    "name": "Gemma Sorigue",
+    "day": 29,
+    "month": 8,
+    "year": 1978,
+    "source": "manual",
+    "enabled": true
   }
 ]
