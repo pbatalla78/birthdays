@@ -646,5 +646,32 @@
     "year": 1964,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 103,
+    "name": "Alicia Massana",
+    "day": 18,
+    "month": 4,
+    "year": 1975,
+    "source": "manual",
+    "enabled": true
+  },
+  {
+    "id": 104,
+    "name": "Jordi Navarro",
+    "day": 19,
+    "month": 4,
+    "year": 1974,
+    "source": "manual",
+    "enabled": true
+  },
+  {
+    "id": 105,
+    "name": "Angela Navarro",
+    "day": 5,
+    "month": 1,
+    "year": 2012,
+    "source": "manual",
+    "enabled": true
   }
 ]
