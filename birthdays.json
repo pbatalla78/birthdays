@@ -682,5 +682,14 @@
     "year": 1979,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 107,
+    "name": "Mireia Soler",
+    "day": 5,
+    "month": 6,
+    "year": 1988,
+    "source": "manual",
+    "enabled": true
   }
 ]
