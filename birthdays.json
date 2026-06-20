@@ -691,5 +691,14 @@
     "year": 1988,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 108,
+    "name": "Joan Llosas Navarro",
+    "day": 21,
+    "month": 10,
+    "year": 1991,
+    "source": "manual",
+    "enabled": true
   }
 ]
