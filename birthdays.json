@@ -700,5 +700,14 @@
     "year": 1991,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 109,
+    "name": "Merce Navarro Lleonart",
+    "day": 29,
+    "month": 10,
+    "year": 1961,
+    "source": "manual",
+    "enabled": true
   }
 ]
