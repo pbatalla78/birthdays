@@ -29,144 +29,144 @@
     {
         "id":  12,
         "name":  "Carlos Vivas Morte",
-        "day":  null,
+        "day":  2,
         "month":  6,
-        "year":  null,
+        "year":  1948,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  13,
         "name":  "Marc Ribes",
-        "day":  null,
+        "day":  4,
         "month":  6,
-        "year":  null,
+        "year":  1978,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  14,
         "name":  "Tatin Lacambra",
-        "day":  null,
+        "day":  5,
         "month":  6,
-        "year":  null,
+        "year":  1980,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  16,
         "name":  "Quim Morell",
-        "day":  null,
+        "day":  6,
         "month":  6,
-        "year":  null,
+        "year":  1978,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  18,
         "name":  "Jordi Cots",
-        "day":  null,
+        "day":  8,
         "month":  6,
-        "year":  null,
+        "year":  1965,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  24,
         "name":  "Rodrigo Romero Van Cutsem",
-        "day":  null,
+        "day":  19,
         "month":  6,
-        "year":  null,
+        "year":  1978,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  26,
         "name":  "Jordi Cabrespina",
-        "day":  null,
+        "day":  23,
         "month":  6,
-        "year":  null,
+        "year":  1974,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  27,
         "name":  "Jovie Ho",
-        "day":  null,
+        "day":  24,
         "month":  6,
-        "year":  null,
+        "year":  1978,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  29,
         "name":  "Santi Blanco",
-        "day":  null,
+        "day":  25,
         "month":  6,
-        "year":  null,
+        "year":  1975,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  31,
         "name":  "Estefania González Campins",
-        "day":  null,
+        "day":  29,
         "month":  6,
-        "year":  null,
+        "year":  1983,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  34,
         "name":  "Gemma Soriano",
-        "day":  null,
+        "day":  30,
         "month":  6,
-        "year":  null,
+        "year":  1979,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  35,
         "name":  "Berta Ricós Furió",
-        "day":  null,
+        "day":  30,
         "month":  6,
-        "year":  null,
+        "year":  1968,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  36,
         "name":  "Vicenç Hernández Reche",
-        "day":  null,
+        "day":  30,
         "month":  6,
-        "year":  null,
+        "year":  1979,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  37,
         "name":  "Zaida Fernandez Ferrer",
-        "day":  null,
+        "day":  2,
         "month":  7,
-        "year":  null,
+        "year":  1977,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  39,
         "name":  "Mamen Perales",
-        "day":  null,
+        "day":  6,
         "month":  7,
-        "year":  null,
+        "year":  1956,
         "source":  "facebook",
         "enabled":  true
     },
     {
         "id":  41,
         "name":  "Cristina Serra Lago",
-        "day":  null,
+        "day":  7,
         "month":  7,
-        "year":  null,
+        "year":  1971,
         "source":  "facebook",
         "enabled":  true
     },
@@ -556,5 +556,194 @@
         "year":  1978,
         "source":  "manual",
         "enabled":  true
+    },
+    {
+        "id":  93,
+        "name":  "Juan Sanchez",
+        "day":  13,
+        "month":  6,
+        "year":  1976,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  94,
+        "name":  "Barbara Parache",
+        "day":  22,
+        "month":  4,
+        "year":  1978,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  95,
+        "name":  "Alex Boada",
+        "day":  28,
+        "month":  4,
+        "year":  1976,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  96,
+        "name":  "Marc Planas",
+        "day":  12,
+        "month":  4,
+        "year":  1978,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  97,
+        "name":  "Sergi Santos",
+        "day":  27,
+        "month":  12,
+        "year":  1979,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  98,
+        "name":  "Carmen Miralles",
+        "day":  23,
+        "month":  12,
+        "year":  1988,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  99,
+        "name":  "Martí Escursell",
+        "day":  15,
+        "month":  5,
+        "year":  1976,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  100,
+        "name":  "Aleix Marco",
+        "day":  12,
+        "month":  12,
+        "year":  1976,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  101,
+        "name":  "Gemma Sorigue",
+        "day":  29,
+        "month":  8,
+        "year":  1978,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  102,
+        "name":  "Jep Tarradas",
+        "day":  27,
+        "month":  5,
+        "year":  1964,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  103,
+        "name":  "Alicia Massana",
+        "day":  18,
+        "month":  4,
+        "year":  1975,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  104,
+        "name":  "Jordi Navarro",
+        "day":  19,
+        "month":  4,
+        "year":  1974,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  105,
+        "name":  "Angela Navarro",
+        "day":  5,
+        "month":  1,
+        "year":  2012,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  106,
+        "name":  "Andrei Dubinin",
+        "day":  8,
+        "month":  5,
+        "year":  1979,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  107,
+        "name":  "Mireia Soler",
+        "day":  5,
+        "month":  6,
+        "year":  1988,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  108,
+        "name":  "Joan Llosas Navarro",
+        "day":  21,
+        "month":  10,
+        "year":  1991,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  109,
+        "name":  "Merce Navarro Lleonart",
+        "day":  29,
+        "month":  10,
+        "year":  1961,
+        "source":  "manual",
+        "enabled":  true
+    },
+    {
+        "id":  110,
+        "name":  "Rafa Silla Romeu",
+        "day":  29,
+        "month":  6,
+        "year":  1974,
+        "source":  "facebook",
+        "enabled":  false
+    },
+    {
+        "id":  111,
+        "name":  "Marieta CajaRuiz",
+        "day":  30,
+        "month":  6,
+        "year":  1979,
+        "source":  "facebook",
+        "enabled":  false
+    },
+    {
+        "id":  112,
+        "name":  "Pablo Dominguez",
+        "day":  4,
+        "month":  7,
+        "year":  1967,
+        "source":  "facebook",
+        "enabled":  false
+    },
+    {
+        "id":  113,
+        "name":  "Marta Blanquer",
+        "day":  6,
+        "month":  7,
+        "year":  1974,
+        "source":  "facebook",
+        "enabled":  false
     }
 ]
