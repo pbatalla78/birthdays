@@ -709,5 +709,14 @@
     "year": 1961,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 110,
+    "name": "Jose Luis Perez",
+    "day": 5,
+    "month": 7,
+    "year": 1977,
+    "source": "manual",
+    "enabled": true
   }
 ]
