@@ -745,5 +745,14 @@
     "year": 1978,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 114,
+    "name": "Jani Serveto",
+    "day": 9,
+    "month": 7,
+    "year": 1978,
+    "source": "manual",
+    "enabled": true
   }
 ]
