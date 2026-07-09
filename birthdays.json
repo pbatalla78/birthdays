@@ -727,5 +727,23 @@
     "year": 1963,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 112,
+    "name": "Marc Bartomeus",
+    "day": 8,
+    "month": 7,
+    "year": 1978,
+    "source": "manual",
+    "enabled": true
+  },
+  {
+    "id": 113,
+    "name": "Vicky North",
+    "day": 8,
+    "month": 7,
+    "year": 1978,
+    "source": "manual",
+    "enabled": true
   }
 ]
