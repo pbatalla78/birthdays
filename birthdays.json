@@ -826,5 +826,14 @@
     "year": 1968,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 124,
+    "name": "Kwan Ho",
+    "day": 27,
+    "month": 8,
+    "year": 1978,
+    "source": "manual",
+    "enabled": true
   }
 ]
