@@ -817,5 +817,14 @@
     "year": 1978,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 123,
+    "name": "Jordina Pomares",
+    "day": 24,
+    "month": 8,
+    "year": 1968,
+    "source": "manual",
+    "enabled": true
   }
 ]
