@@ -862,5 +862,14 @@
     "year": 1978,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 128,
+    "name": "Alberto Salvans",
+    "day": 2,
+    "month": 10,
+    "year": 1974,
+    "source": "manual",
+    "enabled": true
   }
 ]
