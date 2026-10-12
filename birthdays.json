@@ -871,5 +871,14 @@
     "year": 1974,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 129,
+    "name": "Africa Miquel",
+    "day": 12,
+    "month": 10,
+    "year": 1979,
+    "source": "manual",
+    "enabled": true
   }
 ]
