@@ -889,5 +889,14 @@
     "year": 1976,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 131,
+    "name": "Victor bultó",
+    "day": 22,
+    "month": 10,
+    "year": 1978,
+    "source": "manual",
+    "enabled": true
   }
 ]
