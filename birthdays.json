@@ -889,5 +889,14 @@
     "year": 1978,
     "source": "manual",
     "enabled": true
+  },
+  {
+    "id": 132,
+    "name": "Borja Barenys",
+    "day": 30,
+    "month": 10,
+    "year": 1978,
+    "source": "manual",
+    "enabled": true
   }
 ]
