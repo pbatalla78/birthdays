@@ -495,15 +495,6 @@
     "enabled": true
   },
   {
-    "id": 85,
-    "name": "Aroa Martín",
-    "day": 30,
-    "month": 10,
-    "year": 1978,
-    "source": "manual",
-    "enabled": true
-  },
-  {
     "id": 86,
     "name": "Pau Mitjavila",
     "day": 29,
